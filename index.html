@@ -22,76 +22,58 @@
         
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-deep); color: var(--text-main); font-size: 14px; line-height: 1.4; min-height: 100vh; overflow-x: hidden; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
-        /* Экраны */
         .screen { display: none; width: 100%; min-height: 100vh; padding: 15px; }
         .active { display: flex; flex-direction: column; }
 
-        /* Главное Меню */
         #startScreen { justify-content: center; align-items: center; background: radial-gradient(circle at center, #1a2029 0%, var(--bg-deep) 100%); padding: 40px 20px; text-align: center; }
-        #startScreen h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
-        #startScreen h2 { font-size: 16px; font-weight: 600; color: var(--primary); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 60px; }
+        #startScreen h1 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+        #startScreen h2 { font-size: 14px; font-weight: 600; color: var(--primary); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 60px; }
         
         .btn { display: flex; justify-content: center; align-items: center; width: 100%; max-width: 320px; height: 56px; margin: 12px 0; font-size: 18px; font-weight: 700; border: none; border-radius: 28px; cursor: pointer; transition: all 0.2s ease; }
         .btn-main { background-color: var(--primary); color: #000; box-shadow: 0 6px 20px rgba(252, 213, 53, 0.3); }
-        .btn-main:active { transform: translateY(2px); box-shadow: 0 2px 10px rgba(252, 213, 53, 0.2); }
+        .btn-main:active { transform: translateY(2px); }
         .btn-sec { background-color: transparent; color: #fff; border: 2px solid #555; }
-        .btn-sec:active { background-color: rgba(255,255,255,0.05); }
 
-        /* Игровой Хедер */
-        .header { background-color: var(--bg-card); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 100; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .balance { color: var(--green); font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-        .balance::before { content: "💵 "; font-size: 20px; vertical-align: middle; }
+        .header { background-color: var(--bg-card); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 15px; z-index: 100; margin-bottom: 15px; border: 1px solid var(--border); }
+        .balance { color: var(--green); font-size: 24px; font-weight: 800; }
+        .balance::before { content: "💵 "; font-size: 20px; }
 
-        /* Тап-Зона */
-        .tap-area { background: linear-gradient(135deg, #212833, #12161c); border: 2px solid var(--primary); border-radius: 16px; padding: 25px; text-align: center; margin-bottom: 20px; cursor: pointer; transition: transform 0.05s ease; position: relative; }
+        .tap-area { background: linear-gradient(135deg, #212833, #12161c); border: 2px solid var(--primary); border-radius: 16px; padding: 25px; text-align: center; margin-bottom: 20px; cursor: pointer; transition: transform 0.05s ease; }
         .tap-area:active { transform: scale(0.97); }
-        .tap-area h3 { color: var(--primary); font-size: 18px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 5px; }
-        .tap-area p { color: var(--text-sec); font-size: 13px; font-weight: 500; }
+        .tap-area h3 { color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+        .tap-area p { color: var(--text-sec); font-size: 13px; }
 
-        /* Уведомление об авто-рекламе */
-        .ad-timer-notice { font-size: 11px; color: var(--text-sec); text-align: center; margin-top: -15px; margin-bottom: 20px; display: none; }
+        .ad-timer-notice { font-size: 12px; color: var(--text-sec); text-align: center; margin-bottom: 15px; font-weight: bold; }
 
-        /* Секции */
         .section-header { display: flex; align-items: center; gap: 8px; margin: 25px 0 12px 5px; }
-        .section-icon { font-size: 18px; }
-        .section-title { color: var(--primary); font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+        .section-title { color: var(--primary); font-size: 16px; font-weight: 700; }
 
-        /* Карточки Рынков */
-        .market-card { background-color: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .market-card { background-color: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .market-info { flex-grow: 1; min-width: 0; }
-        .market-name { font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .market-price-ow { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--green); font-weight: 600; }
-        .market-owned { font-size: 12px; color: var(--text-sec); font-weight: 500; }
-        .market-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .m-btn { width: 42px; height: 42px; border-radius: 10px; border: none; font-size: 20px; font-weight: 700; cursor: pointer; transition: background 0.1s; }
+        .market-name { font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 4px; }
+        .market-price-ow { font-size: 13px; color: var(--green); font-weight: 600; }
+        .market-owned { font-size: 12px; color: var(--text-sec); margin-left: 5px; }
+        .market-actions { display: flex; gap: 8px; }
+        .m-btn { width: 42px; height: 42px; border-radius: 10px; border: none; font-size: 20px; font-weight: 700; cursor: pointer; }
         .btn-plus { background-color: var(--primary-dim); color: var(--primary); }
-        .btn-plus:active { background-color: rgba(252, 213, 53, 0.2); }
         .btn-minus { background-color: var(--green-dim); color: var(--green); }
-        .btn-minus:active { background-color: rgba(14, 203, 129, 0.2); }
 
-        /* Галерея товаров с горизонтальным скроллом */
-        .horizontal-scroller { display: flex; overflow-x: auto; gap: 12px; padding: 5px 5px 15px 5px; margin-left: -5px; margin-right: -5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .horizontal-scroller { display: flex; overflow-x: auto; gap: 12px; padding-bottom: 10px; scrollbar-width: none; }
         .horizontal-scroller::-webkit-scrollbar { display: none; }
         
         .item-card { background-color: var(--bg-card); border-radius: 14px; border: 1px solid var(--border); width: 160px; flex-shrink: 0; overflow: hidden; display: flex; flex-direction: column; }
         .item-image { width: 100%; height: 100px; background-size: cover; background-position: center; background-color: #2b2f36; }
-        .item-meta { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
-        .item-name { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; max-height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .item-meta { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .item-name { font-size: 13px; font-weight: 700; color: #fff; }
         .item-price { color: var(--primary); font-size: 14px; font-weight: 800; }
-        .item-buy { width: 100%; height: 32px; background-color: var(--primary); color: #000; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .item-buy:active { transform: translateY(1px); background-color: #e5c130; }
+        .item-buy { width: 100%; height: 32px; background-color: var(--primary); color: #000; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-        /* Попап Настроек */
         .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: flex-end; }
         .popup-overlay.active { display: flex; }
-        .settings-popup { background-color: #1a2029; width: 100%; border-radius: 20px 20px 0 0; padding: 25px 20px; box-shadow: 0 -10px 25px rgba(0,0,0,0.5); animation: slideUp 0.3s ease; border-top: 1px solid var(--border); }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .settings-popup { background-color: #1a2029; width: 100%; border-radius: 20px 20px 0 0; padding: 25px 20px; border-top: 1px solid var(--border); }
         .popup-title { font-size: 18px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 20px; }
-        .lang-item { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 600; }
+        .lang-item { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; }
         .lang-item.selected { border-color: var(--primary); background-color: var(--primary-dim); color: var(--primary); }
-        .check-mark { font-size: 18px; display: none; }
-        .lang-item.selected .check-mark { display: block; }
-
     </style>
 </head>
 <body>
@@ -112,109 +94,42 @@
             <h3 id="clickTitle">💸 КЛИКАЙ ДЛЯ ЗАРАБОТКА 💸</h3>
             <p id="clickSub">Нажми, чтобы получить +$200</p>
         </div>
-        <div class="ad-timer-notice" id="adNotice">Авто-реклама через: <span id="adTimer">120</span>с</div>
+        <div class="ad-timer-notice" id="adNotice">До авто-рекламы: <span id="adTimer">120</span>с</div>
 
-        <div class="section-header">
-            <span class="section-icon">📈</span>
-            <div class="section-title" id="titleCrypto">Криптовалюта (Живой курс)</div>
-        </div>
+        <div class="section-header"><span class="section-title" id="titleCrypto">Криптовалюта (Живой курс)</span></div>
         <div id="cryptoContainer"></div>
 
-        <div class="section-header">
-            <span class="section-icon">📊</span>
-            <div class="section-title" id="titleStocks">Акции брендов (Живой курс)</div>
-        </div>
+        <div class="section-header"><span class="section-title" id="titleStocks">Акции брендов (Живой курс)</span></div>
         <div id="stocksContainer"></div>
 
-        <div class="section-header">
-            <span class="section-icon">🚗</span>
-            <div class="section-title" id="catCars">Автосалон</div>
-        </div>
+        <div class="section-header"><span class="section-title" id="catCars">Автосалон</span></div>
         <div class="horizontal-scroller" id="carsContainer"></div>
 
-        <div class="section-header">
-            <span class="section-icon">🏢</span>
-            <div class="section-title" id="catApartments">Элитные Квартиры</div>
-        </div>
+        <div class="section-header"><span class="section-title" id="catApartments">Элитные Квартиры</span></div>
         <div class="horizontal-scroller" id="apartmentsContainer"></div>
 
-        <div class="section-header">
-            <span class="section-icon">🏡</span>
-            <div class="section-title" id="catHouses">Особняки и Дома</div>
-        </div>
+        <div class="section-header"><span class="section-title" id="catHouses">Особняки и Дома</span></div>
         <div class="horizontal-scroller" id="housesContainer"></div>
-
-        <div class="section-header">
-            <span class="section-icon">⚓</span>
-            <div class="section-title" id="catYachts">Роскошные Яхты</div>
-        </div>
-        <div class="horizontal-scroller" id="yachtsContainer"></div>
-
-        <div class="section-header">
-            <span class="section-icon">🛩</span>
-            <div class="section-title" id="catPlanes">Личные Самолёты</div>
-        </div>
-        <div class="horizontal-scroller" id="planesContainer"></div>
-
-        <div class="section-header">
-            <span class="section-icon">🖼</span>
-            <div class="section-title" id="catPaintings">Картинная Галерея</div>
-        </div>
-        <div class="horizontal-scroller" id="paintingsContainer"></div>
     </div>
 
-    <div id="popupOverlay" class="popup-overlay" onclick="closeSettingsIfOutside(event)">
+    <div id="popupOverlay" class="popup-overlay" onclick="closeSettings()">
         <div class="settings-popup">
             <div class="popup-title" id="langPopupTitle">Выбор языка / Language</div>
-            <div id="langRu" class="lang-item selected" onclick="selectLanguage('ru')">
-                <span>🇷🇺 Русский</span>
-                <span class="check-mark">✓</span>
-            </div>
-            <div id="langEn" class="lang-item" onclick="selectLanguage('en')">
-                <span>🇺🇸 English</span>
-                <span class="check-mark">✓</span>
-            </div>
-            <button class="btn btn-sec" id="popupBack" style="margin-top:15px; width:100%; max-width:none;" onclick="closeSettings()">Назад / Back</button>
+            <div id="langRu" class="lang-item selected" onclick="selectLanguage('ru')"><span>🇷🇺 Русский</span></div>
+            <div id="langEn" class="lang-item" onclick="selectLanguage('en')"><span>🇺🇸 English</span></div>
+            <button class="btn btn-sec" id="popupBack" style="margin-top:15px; width:100%;" onclick="closeSettings()">Назад / Back</button>
         </div>
     </div>
 
     <script>
-        // Инициализация Telegram
-        let tg = null;
-        if (window.Telegram && window.Telegram.WebApp) {
-            tg = window.Telegram.WebApp;
-            tg.expand();
-            tg.ready();
-        }
-
-        // Реклама Adsgram (Межстраничная)
-        const AD_BLOCK_ID = 'YOUR_INTERSTITIAL_BLOCK_ID'; // Замени на свой реальный ID!
-        let AdController = null;
-        if (window.Adsgram) {
-            AdController = window.Adsgram.createAd({ blockId: AD_BLOCK_ID });
-        }
-
-        // Глобальные переменные игры
         let balance = 120000;
         let clickPower = 200;
         let currentLang = 'ru';
-        let marketUpdateTimer = null;
-        let autoAdInterval = null;
         let adSecondsLeft = 120;
-        let adCountInterval = null;
 
-        // Встроенные ссылки на качественные фоновые изображения
         const IMG_PRE = "url('https://images.unsplash.com/photo-";
         const IMG_SUF = "?w=300&q=80&auto=format&fit=crop')";
         
-        const CAR_IMGS = [
-            IMG_PRE+"1616422285623-13ff0162193c"+IMG_SUF,IMG_PRE+"1568605114967-8130f3a36994"+IMG_SUF,IMG_PRE+"1618843479313-40f8afb4b4d8"+IMG_SUF,IMG_PRE+"1606575953904-a156f643494a"+IMG_SUF,IMG_PRE+"1525609004556-c46c7d6cf0a3"+IMG_SUF,
-            IMG_PRE+"1621007947382-cc347941150e"+IMG_SUF,IMG_PRE+"1617531653332-bd46c24f2068"+IMG_SUF,IMG_PRE+"1555215695-3004980ad54e"+IMG_SUF,IMG_PRE+"1533473359331-0135ef1b58bf"+IMG_SUF,IMG_PRE+"1563720223185-11003d516935"+IMG_SUF,
-            IMG_PRE+"1619362280286-f1f8fd5032ed"+IMG_SUF,IMG_PRE+"1520050206274-a1ae446cb3cc"+IMG_SUF,IMG_PRE+"1614162692292-7ac56d7f7f1e"+IMG_SUF,IMG_PRE+"1511919884226-fd3cad34687c"+IMG_SUF,IMG_PRE+"1621135802920-133df287f89c"+IMG_SUF,
-            IMG_PRE+"1583121274602-3e2820c69888"+IMG_SUF,IMG_PRE+"1632245889029-e406faaa34cd"+IMG_SUF,IMG_PRE+"1542282088-72c9c27ed0cd"+IMG_SUF,IMG_PRE+"1603386329225-868f9b1ee6c9"+IMG_SUF,IMG_PRE+"1600706432502-75a0e2b3b99a"+IMG_SUF
-        ];
-
-        // Данные (упрощены цены для теста)
         const cryptoMarket = [
             { id: 'btc', name: 'Bitcoin (BTC)', price: 62000.0, owned: 0 },
             { id: 'eth', name: 'Ethereum (ETH)', price: 3400.0, owned: 0 },
@@ -223,21 +138,22 @@
 
         const stockMarket = [
             { id: 'appl', name: 'Apple Inc.', price: 185.0, owned: 0 },
-            { id: 'tsla', name: 'Tesla (TSLA)', price: 170.0, owned: 0 },
-            { id: 'nvda', name: 'NVIDIA', price: 900.0, owned: 0 }
+            { id: 'tsla', name: 'Tesla (TSLA)', price: 170.0, owned: 0 }
         ];
 
-        // Генерируем 20 машин
-        const carsData = Array.from({ length: 20 }, (_, i) => ({
-            name: (i<10 ? "Автомодель A" : "Суперкар X") + (i+1),
-            price: 5000 * (i+1),
-            img: CAR_IMGS[i]
-        }));
+        const carsData = [
+            { name: "ВАЗ 2107", price: 1800, img: IMG_PRE+"1616422285623-13ff0162193c"+IMG_SUF },
+            { name: "Opel Astra G", price: 4200, img: IMG_PRE+"1568605114967-8130f3a36994"+IMG_SUF },
+            { name: "Mercedes W210", price: 7000, img: IMG_PRE+"1618843479313-40f8afb4b4d8"+IMG_SUF },
+            { name: "Toyota RAV4 Long", price: 14500, img: IMG_PRE+"1606575953904-a156f643494a"+IMG_SUF },
+            { name: "BMW 5 Series E60", price: 17500, img: IMG_PRE+"1525609004556-c46c7d6cf0a3"+IMG_SUF },
+            { name: "BMW M5 F90", price: 130000, img: IMG_PRE+"1619362280286-f1f8fd5032ed"+IMG_SUF },
+            { name: "Bugatti Chiron", price: 3200000, img: IMG_PRE+"1600706432502-75a0e2b3b99a"+IMG_SUF }
+        ];
 
         const apartmentsData = [
-            { name: "Студия в пригороде", price: 65000, img: IMG_PRE+"1522708323590-d24dbb6b0267"+IMG_SUF },
-            { name: "2-комнатная в Центре", price: 120000, img: IMG_PRE+"1502672260266-1c1ef2d93688"+IMG_SUF },
-            { name: "Двухуровневый Пентхаус", price: 450000, img: IMG_PRE+"1600607687939-ce8a6c25118c"+IMG_SUF }
+            { name: "Студия в пригороде", price: 45000, img: IMG_PRE+"1522708323590-d24dbb6b0267"+IMG_SUF },
+            { name: "2-комнатная в Центре", price: 120000, img: IMG_PRE+"1502672260266-1c1ef2d93688"+IMG_SUF }
         ];
 
         const housesData = [
@@ -245,35 +161,17 @@
             { name: "Особняк Beverly", price: 1500000, img: IMG_PRE+"1600585154526-990dced4db0d"+IMG_SUF }
         ];
 
-        const yachtsData = [
-            { name: "Круизный Катамаран", price: 95000, img: IMG_PRE+"1567899378494-47b22a2ae96a"+IMG_SUF },
-            { name: "Супер-яхта Azimut", price: 980000, img: IMG_PRE+"1621275471769-e6aa344546d5"+IMG_SUF }
-        ];
-
-        const planesData = [
-            { name: "Легкий Cessna 172", price: 110000, img: IMG_PRE+"1540962351504-03099e0a754b"+IMG_SUF },
-            { name: "Вертолет R44", price: 320000, img: IMG_PRE+"1508614589041-895b88991e3e"+IMG_SUF }
-        ];
-
-        const paintingsData = [
-            { name: "Абстрактный Шедевр", price: 25000, img: IMG_PRE+"1541701494587-cb58502866ab"+IMG_SUF },
-            { name: "Классика Масла", price: 85000, img: IMG_PRE+"1577083552431-6e5fd01aa342"+IMG_SUF }
-        ];
-
         const locales = {
-            ru: { menuTitle: "ИМПЕРИЯ ПЕРЕКУПА", playBtn: "▶ ИГРАТЬ", settingsBtn: "⚙ НАСТРОЙКИ", langPopupTitle: "Выбор языка / Language", popupBack: "Назад", clickTitle: "💸 КЛИКАЙ ДЛЯ ЗАРАБОТКА 💸", clickSub: "Нажми, чтобы получить +$200", titleCrypto: "Криптовалюта (Живой курс)", titleStocks: "Акции брендов (Живой курс)", catCars: "Автосалон (20 моделей)", catApartments: "Элитные Квартиры", catHouses: "Особняки и Дома", catYachts: "Роскошные Яхты", catPlanes: "Личные Самолёты", catPaintings: "Картинная Галерея", buyBtn: "Купить" },
-            en: { menuTitle: "LUXURY TYCOON", playBtn: "▶ PLAY GAME", settingsBtn: "⚙ SETTINGS", langPopupTitle: "Select Language / Выбор языка", popupBack: "Back", clickTitle: "💸 TAP TO EARN PROFIT 💸", clickSub: "Tap to receive +$200", titleCrypto: "Cryptocurrency (Live Rate)", titleStocks: "Brand Stocks (Live Rate)", catCars: "Car Dealership (20 Models)", catApartments: "Luxury Apartments", catHouses: "Mansions & Houses", catYachts: "Luxury Yachts", catPlanes: "Private Jets", catPaintings: "Art Gallery", buyBtn: "Buy" }
+            ru: { menuTitle: "ИМПЕРИЯ ПЕРЕКУПА", playBtn: "▶ ИГРАТЬ", settingsBtn: "⚙ НАСТРОЙКИ", langPopupTitle: "Выбор языка / Language", popupBack: "Назад", clickTitle: "💸 КЛИКАЙ ДЛЯ ЗАРАБОТКА 💸", clickSub: "Нажми, чтобы получить +$200", titleCrypto: "Криптовалюта (Живой курс)", titleStocks: "Акции брендов (Живой курс)", catCars: "Автосалон", catApartments: "Элитные Квартиры", catHouses: "Особняки и Дома", buyBtn: "Купить" },
+            en: { menuTitle: "LUXURY TYCOON", playBtn: "▶ PLAY GAME", settingsBtn: "⚙ SETTINGS", langPopupTitle: "Select Language", popupBack: "Back", clickTitle: "💸 TAP TO EARN PROFIT 💸", clickSub: "Tap to receive +$200", titleCrypto: "Cryptocurrency (Live)", titleStocks: "Brand Stocks (Live)", catCars: "Car Dealership", catApartments: "Luxury Apartments", catHouses: "Mansions & Houses", buyBtn: "Buy" }
         };
 
-        // Функции форматирования и UI
         function formatMoney(amount) { return '$' + amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
         function updateBalanceDisplay() { document.getElementById('balanceDisplay').innerText = formatMoney(balance); }
         function showScreen(screenId) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(screenId).classList.add('active'); }
         
-        // Настройки
         function openSettings() { document.getElementById('popupOverlay').classList.add('active'); }
         function closeSettings() { document.getElementById('popupOverlay').classList.remove('active'); }
-        function closeSettingsIfOutside(e) { if (e.target.id === 'popupOverlay') closeSettings(); }
         
         function selectLanguage(lang) {
             currentLang = lang;
@@ -285,50 +183,101 @@
         function updateLocalization() {
             const t = locales[currentLang];
             for (let id in t) { const el = document.getElementById(id); if (el) el.innerText = t[id]; }
-            renderAllScrollers(); // Перерисовать товары, чтобы обновить кнопки "Купить"
+            renderAllScrollers();
         }
 
-        // Игровая логика
         function startGame() {
             showScreen('gameScreen');
             updateLocalization();
             updateBalanceDisplay();
             renderMarkets();
-            startMarketCycle();
-            startAutoAdCycle();
+            
+            // Запуск таймеров курса и рекламы
+            setInterval(() => {
+                cryptoMarket.forEach(c => c.price *= (1 + (Math.random() * 0.12 - 0.06)));
+                stockMarket.forEach(s => s.price *= (1 + (Math.random() * 0.08 - 0.04)));
+                renderMarkets();
+            }, 3000);
+
+            setInterval(() => {
+                adSecondsLeft--;
+                document.getElementById('adTimer').innerText = adSecondsLeft;
+                if (adSecondsLeft <= 0) {
+                    adSecondsLeft = 120;
+                    alert("⚠️ [РЕКЛАМА ADSGRAM] Здесь сработал автоматический межстраничный показ!");
+                }
+            }, 1000);
         }
 
         function handleTap(e) {
             balance += clickPower;
             updateBalanceDisplay();
-            // Простой визуальный эффект при тапе
-            if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
         }
 
-        // Рекламная логика
-        function startAutoAdCycle() {
-            document.getElementById('adNotice').style.display = 'block';
-            updateAdCountDown();
-            autoAdInterval = setInterval(showAutomaticAd, 120000); // Каждые 2 минуты
-            adCountInterval = setInterval(updateAdCountDown, 1000); // Секундный таймер
+        function renderMarkets() {
+            const renderList = (data, containerId, type) => {
+                const container = document.getElementById(containerId);
+                let html = '';
+                data.forEach((item, index) => {
+                    html += `
+                        <div class="market-card">
+                            <div class="market-info">
+                                <div class="market-name">${item.name}</div>
+                                <div class="market-price-ow">$${item.price.toFixed(2)}<span class="market-owned">(В наличии: ${item.owned})</span></div>
+                            </div>
+                            <div class="market-actions">
+                                <button class="m-btn btn-plus" onclick="buyMarket('${type}', ${index})">+</button>
+                                <button class="m-btn btn-minus" onclick="sellMarket('${type}', ${index})">−</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            };
+            renderList(cryptoMarket, 'cryptoContainer', 'crypto');
+            renderList(stockMarket, 'stocksContainer', 'stock');
         }
 
-        function updateAdCountDown() {
-            document.getElementById('adTimer').innerText = adSecondsLeft;
-            if (adSecondsLeft <= 0) { adSecondsLeft = 120; } else { adSecondsLeft--; }
+        function buyMarket(type, index) {
+            const item = type === 'crypto' ? cryptoMarket[index] : stockMarket[index];
+            if (balance >= item.price) { balance -= item.price; item.owned++; updateBalanceDisplay(); renderMarkets(); }
         }
 
-        function showAutomaticAd() {
-            if (AdController) {
-                AdController.show().then(() => { console.log("Реклама просмотрена."); if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); })
-                .catch(() => { console.log("Реклама пропущена или недоступна."); });
-            } else { console.log("[TEST MODE] Авто-показ рекламы Adsgram."); }
+        function sellMarket(type, index) {
+            const item = type === 'crypto' ? cryptoMarket[index] : stockMarket[index];
+            if (item.owned > 0) { item.owned--; balance += item.price; updateBalanceDisplay(); renderMarkets(); }
         }
 
-        // Логика рынков
-        function startMarketCycle() {
-            // Плавное изменение цен каждые 3 секунды
-            marketUpdateTimer = setInterval(() => {
-                const fluctuate = (item) => { 
-                    let change = 1 + (Math.random() * 0.16 - 0.08); // +/- 8%
-                    if (item.price < 5) change = 1.1; // Не даем цене упас
+        function renderAllScrollers() {
+            renderScroller('carsContainer', carsData);
+            renderScroller('apartmentsContainer', apartmentsData);
+            renderScroller('housesContainer', housesData);
+        }
+
+        function renderScroller(containerId, data) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            data.forEach(item => {
+                html += `
+                    <div class="item-card">
+                        <div class="item-image" style="background-image: ${item.img}"></div>
+                        <div class="item-meta">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${formatMoney(item.price)}</div>
+                            <button class="item-buy" onclick="buyItem('${item.name}', ${item.price})">${locales[currentLang].buyBtn}</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function buyItem(name, price) {
+            if (balance >= price) { balance -= price; updateBalanceDisplay(); alert(`Успешно куплено: ${name}!`); } 
+            else { alert("Недостаточно денег!"); }
+        }
+
+        updateLocalization();
+    </script>
+</body>
+</html>
