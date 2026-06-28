@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Luxury Tycoon Telegram</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0e11; color: #ffffff; overflow-x: hidden; }
+        
+        /* Экраны */
+        .screen { display: none; width: 100vw; min-height: 100vh; padding: 15px; }
+        .active { display: block; }
+
+        /* Меню */
+        .menu-container { text-align: center; padding-top: 30vh; background: radial-gradient(circle, #1e2329 0%, #0b0e11 100%); width: 100vw; height: 100vh; position: absolute; top:0; left:0; }
+        h1 { font-size: 28px; color: #fff; letter-spacing: 1px; margin-bottom: 5px; }
+        h2 { font-size: 18px; color: #fcd535; letter-spacing: 3px; margin-bottom: 50px; }
+        .btn { display: inline-block; width: 80%; max-width: 300px; padding: 15px; margin: 10px 0; font-size: 18px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; text-align: center; }
+        .btn-main { background-color: #fcd535; color: #12161a; box-shadow: 0 4px 15px rgba(252, 213, 53, 0.3); }
+        .btn-sec { background-color: transparent; color: #fff; border: 1px solid #555; }
+
+        /* Настройки */
+        .settings-popup { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #181a20; border-radius: 20px 20px 0 0; padding: 20px; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); z-index: 100; }
+        .settings-popup.open { display: block; }
+        .lang-option { padding: 15px; font-size: 16px; border-bottom: 1px solid #2b2f36; cursor: pointer; display: flex; justify-content: space-between; }
+
+        /* Игровой интерфейс */
+        .header { background-color: #181a20; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 10px; z-index: 10; margin-bottom: 15px; }
+        .balance { color: #0ecb81; font-size: 22px; font-weight: bold; }
+        
+        /* Кликер */
+        .click-area { background: linear-gradient(135deg, #2b3139, #1e2329); border: 1.5px solid #fcd535; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 12px; cursor: pointer; transition: transform 0.05s; }
+        .click-area:active { transform: scale(0.98); }
+        .click-title { color: #fcd535; font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+        .click-sub { color: #848e9c; font-size: 12px; }
+
+        /* Кнопка рекламы */
+        .ad-btn { background-color: #1e2329; border: 1px solid #0ecb81; color: #fff; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+
+        /* Рынке и Списки */
+        .section-title { color: #fcd535; font-size: 16px; font-weight: bold; margin: 15px 0 8px 5px; }
+        .market-card { background-color: #181a20; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .market-info .name { font-weight: bold; font-size: 14px; }
+        .market-info .price { color: #0ecb81; font-size: 13px; margin-top: 2px; }
+        .market-btns { display: flex; gap: 5px; }
+        .m-btn { width: 35px; height: 35px; border-radius: 5px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-plus { background-color: #fcd535; color: #12161a; }
+        .btn-minus { background-color: #ea3943; color: #fff; }
+
+        /* Горизонтальный скролл для товаров */
+        .horizontal-scroll { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scrollbar-width: none; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .item-card { background-color: #181a20; width: 140px; flex-shrink: 0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+        .item-img { width: 140px; height: 90px; background-color: #2b2f36; background-size: cover; background-position: center; }
+        .item-details { padding: 8px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .item-name { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-price { color: #fcd535; font-size: 12px; font-weight: bold; margin: 4px 0; }
+        .buy-btn { background-color: #fcd535; color: #12161a; border: none; width: 100%; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="startScreen" class="screen active">
+        <div class="menu-container">
+            <h1 id="menuTitle">💎 ИМПЕРИЯ ПЕРЕКУПА</h1>
+            <h2 id="menuSub">TELEGRAM EDITION</h2>
+            <button class="btn btn-main" id="playBtn" onclick="changeScreen('gameScreen')">▶ ИГРАТЬ</button>
+            <button class="btn btn-sec" id="settingsBtn" onclick="toggleSettings(true)">⚙ НАСТРОЙКИ</button>
+        </div>
+    </div>
+
+    <div id="settingsPopup" class="settings-popup">
+        <h3 id="langTitle" style="color:#fcd535; margin-bottom:15px; text-align:center;">Выбор языка / Language</h3>
+        <div class="lang-option" onclick="setLanguage('ru')"><span>Русский</span><span id="checkRu">✓</span></div>
+        <div class="lang-option" onclick="setLanguage('en')"><span>English</span><span id="checkEn" style="display:none;">✓</span></div>
+        <button class="btn btn-sec" id="backBtn" style="width:100%; margin-top:15px;" onclick="toggleSettings(false)">Назад / Back</button>
+    </div>
+
+    <div id="gameScreen" class="screen">
+        <div class="header">
+            <div class="balance" id="balanceDisplay">$120,000</div>
+        </div>
+
+        <div class="click-area" onclick="doClick()">
+            <div class="click-title" id="clickTitle">💸 КЛИКАЙ ДЛЯ ЗАРАБОТКА 💸</div>
+            <div class="click-sub" id="clickSub">Получить деньги за тап (+ $200)</div>
+        </div>
+
+        <button class="ad-btn" onclick="showAdsgramVideo()">
+            <span id="adBtnText">📺 Посмотреть рекламу (Бонус +1k - 50k!)</span>
+        </button>
+
+        <div class="section-title" id="titleCrypto">📈 Криптовалюта (Живой курс)</div>
+        <div id="cryptoContainer"></div>
+
+        <div class="section-title" id="titleStocks">📊 Акции брендов (Живой курс)</div>
+        <div id="stocksContainer"></div>
+
+        <div class="section-title" id="catCars">🚗 Автосалон (20 моделей)</div>
+        <div class="horizontal-scroll" id="carsContainer"></div>
+
+        <div class="section-title" id="catApartments">🏢 Элитные Квартиры</div>
+        <div class="horizontal-scroll" id="apartmentsContainer"></div>
+
+        <div class="section-title" id="catHouses">🏡 Особняки и Дома</div>
+        <div class="horizontal-scroll" id="housesContainer"></div>
+
+        <div class="section-title" id="catYachts">⚓ Роскошные Яхты</div>
+        <div class="horizontal-scroll" id="yachtsContainer"></div>
+
+        <div class="section-title" id="catPlanes">🛩 Личные Самолёты</div>
+        <div class="horizontal-scroll" id="planesContainer"></div>
+
+        <div class="section-title" id="catPaintings">🖼 Картинная Галерея</div>
+        <div class="horizontal-scroll" id="paintingsContainer"></div>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App API
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Раскрываем на весь экран телефона
+
+        let balance = 120000;
+        let clickPower = 200;
+        let currentLang = 'ru';
+
+        // Данные рынков
+        const cryptoMarket = [
+            { id: 'btc', name: 'Bitcoin (BTC)', price: 62000.0, count: 0 },
+            { id: 'eth', name: 'Ethereum (ETH)', price: 3400.0, count: 0 },
+            { id: 'sol', name: 'Solana (SOL)', price: 145.0, count: 0 },
+            { id: 'ton', name: 'Toncoin (TON)', price: 7.2, count: 0 },
+            { id: 'doge', name: 'Dogecoin (DOGE)', price: 0.14, count: 0 }
+        ];
+
+        const stockMarket = [
+            { id: 'apple', name: 'Apple Inc.', price: 185.0, count: 0 },
+            { id: 'tesla', name: 'Tesla (TSLA)', price: 170.0, count: 0 },
+            { id: 'nvidia', name: 'NVIDIA', price: 900.0, count: 0 },
+            { id: 'nike', name: 'Nike', price: 95.0, count: 0 },
+            { id: 'sony', name: 'Sony Group', price: 82.0, count: 0 }
+        ];
+
+        // Базы товаров (20 машин, 5 квартир, 5 домов, 5 картин, 5 яхт, 5 самолетов)
+        const cars = [
+            { name: "ВАЗ 2107", price: 1800, img: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=300" },
+            { name: "Opel Astra G", price: 4200, img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=300" },
+            { name: "Mercedes W210", price: 7000, img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=300" },
+            { name: "Toyota RAV4 Long", price: 14500, img: "https://images.unsplash.com/photo-1606575953904-a156f643494a?w=300" },
+            { name: "BMW 5 Series E60", price: 17500, img: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?w=300" },
+            { name: "Toyota Camry V50", price: 19000, img: "https://images.unsplash.com/photo-1621007947382-cc347941150e?w=300" },
+            { name: "Nissan Silvia S15", price: 25000, img: "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=300" },
+            { name: "BMW M3 E92", price: 39000, img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300" },
+            { name: "Nissan Patrol Y62", price: 45000, img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=300" },
+            { name: "Nissan GTR R35", price: 88000, img: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=300" },
+            { name: "BMW M5 F90", price: 130000, img: "https://images.unsplash.com/photo-1619362280286-f1f8fd5032ed?w=300" },
+            { name: "Mercedes-AMG G63", price: 165000, img: "https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?w=300" },
+            { name: "Porsche 911 GT3", price: 230000, img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=300" },
+            { name: "Audi R8 V10", price: 180000, img: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=300" },
+            { name: "Lamborghini Huracan", price: 290000, img: "https://images.unsplash.com/photo-1621135802920-133df287f89c?w=300" },
+            { name: "Ferrari 488 GTB", price: 310000, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=300" },
+            { name: "Rolls-Royce Ghost", price: 350000, img: "https://images.unsplash.com/photo-1632245889029-e406faaa34cd?w=300" },
+            { name: "McLaren 720S", price: 280000, img: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=300" },
+            { name: "Aston Martin DBS", price: 320000, img: "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=300" },
+            { name: "Bugatti Chiron", price: 3200000, img: "https://images.unsplash.com/photo-1600706432502-75a0e2b3b99a?w=300" }
+        ];
+
+        const apartments = [
+            { name: "Студия на окраине", price: 45000, img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300" },
+            { name: "2-комнатная в Центре", price: 120000, img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=300" },
+            { name: "Лофт в мегаполисе", price: 250000, img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300" },
+            { name: "Люкс Апартаменты", price: 550000, img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=300" },
+            { name: "Двухуровневый Пентхаус", price: 1500000, img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=300" }
+        ];
+
+        const houses = [
+            { name: "Загородная Дача", price: 60000, img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300" },
+            { name: "Уютный Коттедж", price: 180000, img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=300" },
+            { name: "Скандинавский Дом", price: 350000, img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300" },
+            { name: "Современная Вилла", price: 950000, img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=300" },
+            { name: "Особняк в Беверли", price: 8500000, img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=300" }
+        ];
+
+        const yachts = [
+            { name: "Спортивный Катер", price: 25000, img: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=300" },
+            { name: "Круизный Катамаран", price: 110000, img: "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=300" },
+            { name: "Люкс Яхта Azimut", price: 450000, img: "https://images.unsplash.com/photo-1621275471769-e6aa344546d5?w=300" },
+            { name: "Океанская Мега-яхта", price: 2300000, img: "https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=300" },
+            { name: "Супер-яхта", price: 45000000, img: "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=300" }
+        ];
+
+        const planes = [
+            { name: "Легкий Cessna 172", price: 85000, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=300" },
+            { name: "Вертолет Robinson", price: 380000, img: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=300" },
+            { name: "Бизнес-джет Learjet", price: 4200000, img: "https://images.unsplash.com/photo-1520437358207-325b445eaeae?w=300" },
+            { name: "Gulfstream G650", price: 25000000, img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=300" },
+            { name: "Частный Боинг 747", price: 120000000, img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=300" }
+        ];
+
+        const paintings = [
+            { name: "Уличный Арт (Banksy)", price: 15000, img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=300" },
+            { name: "Эскиз Кубизма", price: 95000, img: "https://images.unsplash.com/photo-1579783928621-7a13d66a62d1?w=300" },
+            { name: "Абстрактный Шедевр", price: 450000, img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300" },
+            { name: "Поп-Арт Портрет", price: 1200000, img: "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=300" },
+            { name: "Шедевр Классики", price: 85000000, img: "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?w=300" }
+        ];
+
+        // Локализация текста
+        const locales = {
+            ru: {
+                menuTitle: "💎 ИМПЕРИЯ ПЕРЕКУПА", playBtn: "▶ ИГРАТЬ", settingsBtn: "⚙ НАСТРОЙКИ", langTitle: "Выбор языка / Language",
+                backBtn: "Назад", clickTitle: "💸 КЛИКАЙ ДЛЯ ЗАРАБОТКА 💸", clickSub: "Получить деньги за тап (+ $200)",
+                adBtnText: "📺 Посмотреть рекламу (Бонус +1k - 50k!)", titleCrypto: "📈 Криптовалюта (Живой курс)",
+                titleStocks: "📊 Акции брендов (Живой курс)", catCars: "🚗 Автосалон (20 моделей)",
+                catApartments: "🏢 Элитные Квартиры", catHouses: "🏡 Особняки и Дома", catYachts: "⚓ Роскошные Яхты",
+                catPlanes: "🛩 Личные Самолёты", catPaintings: "🖼 Картинная Галерея", buyBtn: "Выкупить"
+            },
+            en: {
+                menuTitle: "💎 LUXURY TYCOON", playBtn: "▶ PLAY GAME", settingsBtn: "⚙ SETTINGS", langTitle: "Select Language / Выбор языка",
+                backBtn: "Back", clickTitle: "💸 TAP TO EARN PROFIT 💸", clickSub: "Get money per tap (+ $200)",
+                adBtnText: "📺 Watch Ad (Bonus +1k - 50k!)", titleCrypto: "📈 Cryptocurrency (Live Rate)",
+                titleStocks: "📊 Brand Stocks (Live Rate)", catCars: "🚗 Car Dealership (20 Models)",
+                catApartments: "🏢 Luxury Apartments", catHouses: "🏡 Mansions & Houses", catYachts: "⚓ Luxury Yachts",
+                catPlanes: "🛩 Private Jets", catPaintings: "🖼 Art Gallery", buyBtn: "Buy Out"
+            }
+        };
+
+        function formatMoney(num) {
+            return '$' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function changeScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function toggleSettings(show) {
+            document.getElementById('settingsPopup').classList.toggle('open', show);
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('checkRu').style.display = lang === 'ru' ? 'inline' : 'none';
+            document.getElementById('checkEn').style.display = lang === 'en' ? 'inline' : 'none';
+            
+            // Обновление строк
+            const t = locales[lang];
+            for (let key in t) {
+                const el = document.getElementById(key);
+                if (el) el.innerText = t[key];
+            }
+            renderAll();
+        }
+
+        function doClick() {
+            balance += clickPower;
+            document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+        }
+
+        // --- МОНЕТИЗАЦИЯ ЧЕРЕЗ ADSGRAM ---
+        // Замени 'YOUR_BLOCK_ID' на реальный ID блока из личного кабинета Adsgram
+        const AdController = window.Adsgram ? window.Adsgram.createAd({ blockId: 'YOUR_BLOCK_ID' }) : null;
+
+        function showAdsgramVideo() {
+            if (AdController) {
+                AdController.show().then((result) => {
+                    // Игрок досмотрел видео полностью — выдаем случайный куш
+                    let reward = Math.floor(Math.random() * 49001) + 1000;
+                    balance += reward;
+                    document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+                    alert(currentLang === 'ru' ? `Успешно! Вы получили бонус +${formatMoney(reward)}` : `Success! Received bonus +${formatMoney(reward)}`);
+                }).catch((error) => {
+                    // Реклама не загрузилась или игрок её закрыл раньше времени
+                    alert(currentLang === 'ru' ? "Реклама временно недоступна или пропущена" : "Ad skipped or unavailable");
+                });
+            } else {
+                // Режим тестирования, если запущено вне Телеграма
+                let reward = Math.floor(Math.random() * 49001) + 1000;
+                balance += reward;
+                document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+                alert(`[TEST MODE] Начислен бонус: +${formatMoney(reward)}`);
+            }
+        }
+
+        // Логика рынка
+        function renderMarkets() {
+            let cryptoHTML = '';
+            cryptoMarket.forEach((item, index) => {
+                cryptoHTML += `<div class="market-card">
+                    <div class="market-info"><div class="name">${item.name}</div><div class="price">$${item.price.toFixed(2)} | В наличии: ${item.count}</div></div>
+                    <div class="market-btns">
+                        <button class="m-btn btn-plus" onclick="buyMarket('crypto', ${index})">+</button>
+                        <button class="m-btn btn-minus" onclick="sellMarket('crypto', ${index})">-</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('cryptoContainer').innerHTML = cryptoHTML;
+
+            let stocksHTML = '';
+            stockMarket.forEach((item, index) => {
+                stocksHTML += `<div class="market-card">
+                    <div class="market-info"><div class="name">${item.name}</div><div class="price">$${item.price.toFixed(1)} | В наличии: ${item.count}</div></div>
+                    <div class="market-btns">
+                        <button class="m-btn btn-plus" onclick="buyMarket('stock', ${index})">+</button>
+                        <button class="m-btn btn-minus" onclick="sellMarket('stock', ${index})">-</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('stocksContainer').innerHTML = stocksHTML;
+        }
+
+        function buyMarket(type, index) {
+            let item = type === 'crypto' ? cryptoMarket[index] : stockMarket[index];
+            if (balance >= item.price) {
+                balance -= item.price;
+                item.count++;
+                document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+                renderMarkets();
+            }
+        }
+
+        function sellMarket(type, index) {
+            let item = type === 'crypto' ? cryptoMarket[index] : stockMarket[index];
+            if (item.count > 0) {
+                item.count--;
+                balance += item.price;
+                document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+                renderMarkets();
+            }
+        }
+
+        // Логика галерей имущества
+        function renderGrid(containerId, list) {
+            let html = '';
+            list.forEach(item => {
+                html += `<div class="item-card">
+                    <div class="item-img" style="background-image: url('${item.img}')"></div>
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">${formatMoney(item.price)}</div>
+                        <button class="buy-btn" onclick="buyProperty('${item.name}', ${item.price})">${locales[currentLang].buyBtn}</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById(containerId).innerHTML = html;
+        }
+
+        function buyProperty(name, price) {
+            if (balance >= price) {
+                balance -= price;
+                document.getElementById('balanceDisplay').innerText = formatMoney(balance);
+                alert(currentLang === 'ru' ? `Поздравляем! Вы купили ${name}` : `Congrats! Bought ${name}`);
+            } else {
+                alert(currentLang === 'ru' ? "Недостаточно денег!" : "Not enough money!");
+            }
+        }
+
+        function renderAll() {
+            renderMarkets();
+            renderGrid('carsContainer', cars);
+            renderGrid('apartmentsContainer', apartments);
+            renderGrid('housesContainer', houses);
+            renderGrid('yachtsContainer', yachts);
+            renderGrid('planesContainer', planes);
+            renderGrid('paintingsContainer', paintings);
+        }
+
+        // Живой изменяющийся курс каждые 3 секунды
+        setInterval(() => {
+            cryptoMarket.forEach(c => { c.price *= (1 + (Math.random() * 0.12 - 0.05)); });
+            stockMarket.forEach(s => { s.price *= (1 + (Math.random() * 0.08 - 0.03)); });
+            renderMarkets();
+        }, 3000);
+
+        // Старт
+        renderAll();
+    </script>
+</body>
+</html>
