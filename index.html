@@ -1,66 +1,187 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Empire</title>
-    <style>
-        body { background: #050505; color: #fff; font-family: sans-serif; margin: 0; padding: 10px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card { background: #151515; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #333; }
-        .card img { width: 100%; height: 60px; object-fit: cover; border-radius: 4px; }
-        .btn { width: 100%; padding: 8px; margin-top: 5px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .buy { background: #d4af37; }
-        .sell { background: #444; color: #fff; }
-    </style>
+<meta charset="UTF-8">
+<title>Жизнь: 100 лет пути</title>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f172a;
+    font-family: Arial;
+    color: white;
+}
+
+.card {
+    width: 360px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+#avatar { font-size: 60px; margin: 10px; }
+
+.stat {
+    font-size: 14px;
+    margin: 5px;
+    color: #cbd5e1;
+}
+
+.log {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.opt { background: #3b82f6; color: white; }
+.ad { background: #f59e0b; color: black; }
+</style>
 </head>
+
 <body>
-    <div id="bal" style="text-align:center; font-size:20px; color:#d4af37; margin:10px">💰 $30,000</div>
-    <div class="card">
-        <button onclick="tap()" style="width:100%; padding:15px; background:#d4af37; border:none; font-weight:bold">КЛИК (+$<span id="clickValDisp">10</span>)</button>
-        <p id="upgradeText">Апгрейд: $100</p>
-        <button onclick="upgrade()" id="upgBtn" class="btn buy">КУПИТЬ АПГРЕЙД</button>
+
+<div class="card">
+    <div id="avatar">👶</div>
+
+    <div id="age">Возраст: 1</div>
+
+    <div class="stat" id="stats">
+        💰 Деньги: 0 | ❤️ Счастье: 50 | 🩺 Здоровье: 100
     </div>
-    <div id="content"></div>
 
-    <script>
-        let balance = 30000; let clickVal = 10; let upgradeCost = 100;
-        let inv = {};
-        const data = {
-            "🏎 Машины": [{n:"BMW",p:10000,img:"https://images.unsplash.com/photo-1555215695-3004980ad54e"},{n:"Audi",p:12000,img:"https://images.unsplash.com/photo-1541348263662-e068662d82ab"},{n:"Mers",p:15000,img:"https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8"},{n:"Ferrari",p:50000,img:"https://images.unsplash.com/photo-1592198084033-ade902d1aae0"},{n:"Lambo",p:60000,img:"https://images.unsplash.com/photo-1544829099-b9a0c07fad1a"},{n:"Porsche",p:40000,img:"https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e"},{n:"Tesla",p:35000,img:"https://images.unsplash.com/photo-1560958089-b8a1929cea89"}],
-            "⚓ Яхты": [{n:"Катер",p:30000,img:"https://images.unsplash.com/photo-1567899378494-47b22a2ae96a"},{n:"Яхта S",p:150000,img:"https://images.unsplash.com/photo-1621275471769-e6aa344546d5"},{n:"Яхта M",p:500000,img:"https://images.unsplash.com/photo-1521747116042-5a810fda9664"}],
-            "⌚ Часы": [{n:"Rolex",p:10000,img:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49"},{n:"Omega",p:8000,img:"https://images.unsplash.com/photo-1524592094714-0f0654e20314"},{n:"Seiko",p:2000,img:"https://images.unsplash.com/photo-1594736768687-350711589178"}],
-            "📈 Акции": [{n:"Apple",p:200,img:"https://images.unsplash.com/photo-1611186871348-b1ce696e52c9"},{n:"Tesla",p:300,img:"https://images.unsplash.com/photo-1619441207936-33c9284241aa"},{n:"Amazon",p:500,img:"https://images.unsplash.com/photo-1523474253046-d72741d5d0d2"}],
-            "₿ Крипта": [{n:"BTC",p:60000,img:"https://images.unsplash.com/photo-1518546305927-5a555bb7020d"},{n:"ETH",p:3000,img:"https://images.unsplash.com/photo-1605792657660-596af9009e82"},{n:"TON",p:7,img:"https://images.unsplash.com/photo-1621416895569-f886f44d246c"}],
-            "🏡 Дома": [{n:"Коттедж",p:20000,img:"https://images.unsplash.com/photo-1518780664697-55e3ad937233"},{n:"Вилла",p:100000,img:"https://images.unsplash.com/photo-1600585154526-990dced4db0d"},{n:"Шале",p:80000,img:"https://images.unsplash.com/photo-1502784444187-359ac186c5bb"}],
-            "🏢 КВ": [{n:"Студия",p:15000,img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"},{n:"1-комн",p:25000,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"},{n:"Лофт",p:70000,img:"https://images.unsplash.com/photo-1493809842364-79357021175b"}]
-        };
+    <div class="log" id="text">Ты родился. Что дальше?</div>
 
-        function render() {
-            let html = "";
-            for (let cat in data) {
-                html += `<h3>${cat}</h3><div class="grid">`;
-                data[cat].forEach(i => {
-                    html += `<div class="card"><img src="${i.img}" loading="lazy"><p>${i.n}<br>$${i.p.toLocaleString()}</p>
-                    <button class="btn buy" onclick="buy('${i.n}', ${i.p})">Buy</button>
-                    <button class="btn sell" onclick="sell('${i.n}', ${i.p})">Sell</button></div>`;
-                });
-                html += `</div>`;
-            }
-            document.getElementById('content').innerHTML = html;
+    <button class="opt" id="b1" onclick="choose(1)">Вариант 1</button>
+    <button class="opt" id="b2" onclick="choose(2)">Вариант 2</button>
+    <button class="ad" onclick="adReward()">🎁 Реклама (риск/награда)</button>
+</div>
+
+<script>
+let age = 1;
+let gameOver = false;
+
+let stats = {
+    money: 0,
+    happiness: 50,
+    health: 100
+};
+
+const ad = window.Adsgram ? window.Adsgram.init({ blockId: "ТВОЙ_BLOCK_ID" }) : null;
+
+function eventText(a) {
+    if (a < 7) return "Детство. Всё новое и странное.";
+    if (a < 18) return "Школа, друзья и первые решения.";
+    if (a < 30) return "Пора строить жизнь и карьеру.";
+    if (a < 60) return "Взрослая жизнь с нагрузкой.";
+    if (a < 90) return "Переоценка жизни и результатов.";
+    return "Финальные годы. Итоги уже близко.";
+}
+
+function updateUI() {
+    document.getElementById("age").innerText = "Возраст: " + age;
+
+    document.getElementById("stats").innerText =
+        `💰 ${stats.money} | ❤️ ${stats.happiness} | 🩺 ${stats.health}`;
+
+    document.getElementById("text").innerText =
+        "Тебе " + age + " лет. " + eventText(age);
+
+    if (age < 12) document.getElementById("avatar").innerText = "🧒";
+    else if (age < 20) document.getElementById("avatar").innerText = "🧑";
+    else if (age < 60) document.getElementById("avatar").innerText = "👨‍💼";
+    else document.getElementById("avatar").innerText = "👴";
+
+    document.getElementById("b1").innerText = "Работать";
+    document.getElementById("b2").innerText = "Отдыхать";
+}
+
+function checkDeath() {
+    if (stats.health <= 0 || stats.happiness <= 0) {
+        gameOver = true;
+        document.getElementById("text").innerText =
+            "💀 Ты умер. Игра окончена.";
+    }
+
+    if (age >= 100) {
+        gameOver = true;
+        document.getElementById("text").innerText =
+            `🏁 Конец жизни. Деньги: ${stats.money}, Счастье: ${stats.happiness}`;
+    }
+}
+
+function nextYear() {
+    if (gameOver) return;
+
+    age++;
+
+    // базовое ухудшение/изменение
+    stats.happiness -= 2;
+    stats.health -= 1;
+
+    updateUI();
+    checkDeath();
+}
+
+function choose(type) {
+    if (gameOver) return;
+
+    if (type === 1) {
+        stats.money += 20;
+        stats.happiness -= 5;
+    } else {
+        stats.happiness += 5;
+        stats.health -= 2;
+    }
+
+    nextYear();
+}
+
+function adReward() {
+    if (gameOver) return;
+
+    if (!ad) {
+        stats.money += 100;
+        stats.happiness -= 5;
+        nextYear();
+        return;
+    }
+
+    ad.show().then(res => {
+        if (res && res.done) {
+            stats.money += 200;
+            stats.happiness += 10;
+            document.getElementById("text").innerText =
+                "🎁 Реклама дала тебе бонус!";
+            setTimeout(nextYear, 1000);
         }
+    }).catch(() => {
+        stats.money += 50;
+        nextYear();
+    });
+}
 
-        function tap() { balance += clickVal; update(); }
-        function upgrade() { if(balance >= upgradeCost && clickVal < 50) { balance -= upgradeCost; clickVal += 10; upgradeCost += 100; update(); } }
-        function buy(n, p) { if(balance >= p) { balance -= p; inv[n] = (inv[n] || 0) + 1; update(); } }
-        function sell(n, p) { if(inv[n] > 0) { balance += p * 0.95; inv[n]--; update(); } }
-        function update() { 
-            document.getElementById('bal.innerText = "💰 $" + Math.floor(balance).toLocaleString();
-            document.getElementById('clickValDisp').innerText = clickVal;
-            document.getElementById('upgradeText').innerText = "Апгрейд: $" + upgradeCost;
-            render();
-        }
-        render();
-    </script>
+updateUI();
+</script>
+
 </body>
 </html>
